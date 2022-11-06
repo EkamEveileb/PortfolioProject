@@ -68,7 +68,8 @@ ORDER BY 1,2;
 
 -- Looking at Total Population vs Vaccinations
 
-SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, SUM(CONVERT(bigint,cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) AS RollingVaccinated
+SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, 
+SUM(CONVERT(bigint,cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) AS RollingVaccinated
 FROM
 PortfolioProject..CD JOIN PortfolioProject..CV
 ON CD.location=CV.location AND cd.date=cv.date
@@ -80,7 +81,8 @@ ORDER BY 1,2,3;
 WITH PercentVaccinated (Continent, Location, Date, Population, New_Vaccinations, RollingVaccinated)
 AS
 (
-SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, SUM(CONVERT(bigint,cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) AS RollingVaccinated
+SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, 
+SUM(CONVERT(bigint,cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) AS RollingVaccinated
 FROM
 PortfolioProject..CD JOIN PortfolioProject..CV
 ON CD.location=CV.location AND cd.date=cv.date
@@ -102,7 +104,8 @@ New_vaccinations NUMERIC,
 RollingVaccinated NUMERIC
 )
 INSERT INTO #PercentVaccinated
-SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, SUM(CONVERT(bigint,cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) AS RollingVaccinated
+SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, 
+SUM(CONVERT(bigint,cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) AS RollingVaccinated
 FROM
 PortfolioProject..CD JOIN PortfolioProject..CV
 ON CD.location=CV.location AND cd.date=cv.date
@@ -121,6 +124,5 @@ ON CD.location=CV.location AND cd.date=cv.date
 WHERE cd.Continent IS NOT NULL
 --ORDER BY 1,2,3;
 
-DROP VIEW PercentVaccinated
 
 SELECT * FROM PercentVaccinated
